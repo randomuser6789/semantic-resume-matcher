@@ -26,7 +26,6 @@ const ResumeJobMatcher = () => {
     setResult(null);
 
     try {
-      // ✅ Using the working free model
       const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`;
       
       const response = await fetch(url, {
