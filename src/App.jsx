@@ -13,21 +13,16 @@ const ResumeJobMatcher = () => {
       setError('Please provide both resume and job description');
       return;
     }
-
     const apiKey = process.env.REACT_APP_GEMINI_API_KEY;
-    
     if (!apiKey) {
       setError('API key not found. Make sure .env file exists with REACT_APP_GEMINI_API_KEY');
       return;
     }
-
     setLoading(true);
     setError('');
     setResult(null);
-
     try {
       const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent?key=${apiKey}`;
-      
       const response = await fetch(url, {
         method: 'POST',
         headers: {
@@ -61,22 +56,17 @@ Output strictly valid JSON matching this schema:
           }
         })
       });
-
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`API returned ${response.status}: ${errorText}`);
       }
-
       const data = await response.json();
-      
       if (!data.candidates || !data.candidates[0]) {
         throw new Error('No response from API');
       }
-
       const text = data.candidates[0].content.parts[0].text;
       const parsed = JSON.parse(text);
       setResult(parsed);
-
     } catch (err) {
       console.error('Full error:', err);
       setError(`${err.message}`);
@@ -121,7 +111,6 @@ Languages: Python, JavaScript, SQL
 Frameworks: Django, Flask, React
 Cloud: AWS, Docker, Kubernetes
 Databases: PostgreSQL, MongoDB, Redis`);
-
     setJobDescription(`Full Stack Developer
 
 We're seeking a Full Stack Developer to join our growing team.
@@ -165,7 +154,6 @@ Nice to have:
             Load sample data
           </button>
         </div>
-
         <div className="grid md:grid-cols-2 gap-6 mb-6">
           <div className="bg-white rounded-lg shadow-lg p-6">
             <div className="flex items-center gap-2 mb-4">
@@ -179,7 +167,6 @@ Nice to have:
               className="w-full h-80 p-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none font-mono text-sm"
             />
           </div>
-
           <div className="bg-white rounded-lg shadow-lg p-6">
             <div className="flex items-center gap-2 mb-4">
               <Briefcase className="text-indigo-600" size={24} />
@@ -193,7 +180,6 @@ Nice to have:
             />
           </div>
         </div>
-
         <div className="text-center mb-6">
           <button
             onClick={analyzeMatch}
@@ -210,14 +196,12 @@ Nice to have:
             )}
           </button>
         </div>
-
         {error && (
           <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 flex items-start gap-3">
             <AlertCircle className="text-red-600 flex-shrink-0 mt-0.5" size={20} />
             <p className="text-red-800">{error}</p>
           </div>
         )}
-
         {result && (
           <div className="bg-white rounded-lg shadow-lg p-8">
             <div className="text-center mb-8">
@@ -228,7 +212,6 @@ Nice to have:
               </div>
               <h3 className="text-2xl font-bold text-gray-800">Overall Match Score</h3>
             </div>
-
             <div className="grid md:grid-cols-3 gap-6 mb-8">
               {[
                 { label: 'Skills Match', score: result.skillsMatch },
@@ -249,7 +232,6 @@ Nice to have:
                 </div>
               ))}
             </div>
-
             <div className="grid md:grid-cols-2 gap-6 mb-6">
               <div>
                 <h4 className="text-lg font-semibold text-green-700 mb-3 flex items-center gap-2">
@@ -265,7 +247,6 @@ Nice to have:
                   ))}
                 </ul>
               </div>
-
               <div>
                 <h4 className="text-lg font-semibold text-orange-700 mb-3 flex items-center gap-2">
                   <AlertCircle size={20} />
@@ -281,7 +262,6 @@ Nice to have:
                 </ul>
               </div>
             </div>
-
             <div className="bg-blue-50 rounded-lg p-6">
               <h4 className="text-lg font-semibold text-blue-900 mb-2">Recommendation</h4>
               <p className="text-gray-700 leading-relaxed">{result.recommendation}</p>
